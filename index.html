@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- verly js lib -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/anuraghazra/VerlyRangeSlider@v1.0.0/src/style.css" />
+    <script src="https://cdn.jsdelivr.net/gh/anuraghazra/Verly.js@v1.2.0/dist/verly.bundle.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/anuraghazra/VerlyRangeSlider@v1.0.2/src/VerlyRange.js"></script>
+    <!-- .................... -->
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Music Player</title>
+</head>
+
+<body>
+    <div class="player">
+        <div class="background">
+            <div class="overlaybg">
+                <h3 id="playlist-status" style="color: white"></h3>
+            </div>
+        </div>
+        <div class="controls">
+            <div class="timebox">
+                <span id="curtimetext">00:00</span>
+                <span id="durtimetext">00:00</span>
+            </div>
+            <div class="seeker">
+                <input type="range" id="seekslider" min="0" max="100" value="0" step="0.01">
+            </div>
+            <div class="control-btns">
+                <i id="prev" class="fa fa-arrow-circle-left"></i>
+                <i id="play-pause" class="fa fa-play-circle"></i>
+                <i id="next" class="fa fa-arrow-circle-right"></i>
+            </div>
+            <div class="volumeslider">
+                <input type="range" id="volumeslider" min="0" max="100" value="100" step="0.01">
+            </div>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+
+</html>

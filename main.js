@@ -15,8 +15,6 @@ const seekslider = $('#seekslider');
 const curtimeText = $('#curtimetext');
 const durtimeText = $('#durtimetext');
 const playlistStatus = $('#playlist-status');
-let seeking = false;
-var seekto = 0;
 
 //audio object
 let audio = new Audio();

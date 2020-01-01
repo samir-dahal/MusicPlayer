@@ -77,15 +77,19 @@ audio.addEventListener('timeupdate', seekTimeUpdate);
 
 
 //autoplay song when ends
+function playAudio() {
+    audio.src = dir + playlist[playlist_index] + ext;
+    audio.currentTime = 0;
+    audio.play();
+}
 function autoPlay() {
     if (playlist_index == (playlist.length - 1)) {
         playlist_index = 0;
+        playAudio();
     }
     else {
         playlist_index++;
-        audio.src = dir + playlist[playlist_index] + ext;
-        audio.currentTime = 0;
-        audio.play();
+        playAudio();
     }
 }
 audio.addEventListener('ended', autoPlay);
@@ -106,13 +110,11 @@ function nextSong() {
     checkPlayPause();
     if (playlist_index == (playlist.length - 1)) {
         playlist_index = 0;
-        audio.src = dir + playlist[playlist_index] + ext;
-        audio.play();
+        playAudio();
     }
     else {
         playlist_index++;
-        audio.src = dir + playlist[playlist_index] + ext;
-        audio.play();
+        playAudio();
     }
 }
 next.addEventListener('click', nextSong);
@@ -122,13 +124,11 @@ var count = playlist.length;
 function prevSong() {
     checkPlayPause();
     if (playlist_index == 0) {
-        audio.src = dir + playlist[playlist_index] + ext;
-        audio.play();
+        playAudio();
     }
     else {
         playlist_index--;
-        audio.src = dir + playlist[playlist_index] + ext;
-        audio.play();
+        playAudio();
     }
 }
 prev.addEventListener('click', prevSong);

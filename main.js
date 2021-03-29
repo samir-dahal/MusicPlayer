@@ -131,15 +131,11 @@ function prevSong() {
 }
 prev.addEventListener('click', prevSong);
 
-//verly js
+
 VerlyRange("seekslider", "#655ecf");
 VerlyRange("volumeslider", "#eb3992");
 
-/**
- * @author Anurag Hazra
- * @param {string} id 
- * @param {string} color 
- */
+
 function VerlyRange(id, color) {
     let DOMSlider = document.getElementById(id);
     let canvas = document.createElement('canvas');
@@ -158,7 +154,7 @@ function VerlyRange(id, color) {
     let verly = new Verly(50, canvas, ctx);
     let rope = generateRope();
 
-    // generic function to apply reset of rope wehn resizing
+    // generic function to apply reset of rope when resizing
     function generateRope() {
         let rope = verly.createRope(0, 0, width / 20, 17, 0);
         let lastIndex = rope.points.length - 1;

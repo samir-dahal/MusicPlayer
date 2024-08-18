@@ -7,14 +7,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <!-- verly js lib -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/anuraghazra/VerlyRangeSlider@v1.0.0/src/style.css" />
-    <script src="https://cdn.jsdelivr.net/gh/anuraghazra/Verly.js@v1.2.0/dist/verly.bundle.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/anuraghazra/VerlyRangeSlider@v1.0.2/src/VerlyRange.js"></script>
+    <link rel="stylesheet" href="./VerlyRangeSlider@v1.0.0/style.css" />
+    <script src="./Verly.js@v1.2.0/verly.bundle.js"></script>
+    <script src="./VerlyRangeSlider@v1.0.2/VerlyRange.js"></script>
     <!-- .................... -->
 
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>Music Player</title>
+    <link rel="stylesheet" href="./font-awesome/4.7.0/css/font-awesome.min.css">
+    <title id="title">Music Player</title>
 </head>
 
 <body>
@@ -38,10 +38,13 @@
                 <i id="next" class="fa fa-arrow-circle-right"></i>
             </div>
             <div class="volumeslider">
-                <input type="range" id="volumeslider" min="0" max="100" value="100" step="0.01">
+                <input type="range" id="volumeslider" min="0" max="100" value="35" step="0.01">
             </div>
         </div>
     </div>
+    <div id="backgrounds" class="backgrounds"></div>
+    <div id="backgroundsdiv" class="backgroundsdiv"></div>
+    <script src="playlist.js"></script>
     <script src="main.js"></script>
 </body>
 

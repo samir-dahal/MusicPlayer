@@ -1,140 +1,94 @@
 //helper functions
-function $(element) {
-    return document.querySelector(element);
-}
-function log(message) {
-    return console.log(message);
-}
+const $ = (element) => document.querySelector(element);
+const log = (message) => console.log(message);
 
 //object refrences
 const next = $('#next');
-const playToggle = $('#play-pause');
 const prev = $('#prev');
+const playToggle = $('#play-pause');
 const volumeslider = $('#volumeslider');
 const seekslider = $('#seekslider');
 const curtimeText = $('#curtimetext');
 const durtimeText = $('#durtimetext');
 const playlistStatus = $('#playlist-status');
 
-//audio object
-let audio = new Audio();
-let dir = "sounds/";
-let playlist = ["sound1", "sound2", "sound3"];
-let ext = ".mp3";
-let playlist_index = 0;
-audio.src = dir + playlist[playlist_index] + ext;
-
-
-//play or pause music
-function PlayPause() {
-    playToggle.classList.toggle("fa-pause-circle");
-    if (!audio.paused) {
-        audio.pause();
-    }
-    else {
-        audio.play();
-    }
-}
-playToggle.addEventListener('click', PlayPause);
-
-//manual seeking
-seekslider.addEventListener('input', () => {
-    audio.currentTime = audio.duration * (seekslider.value / 100);
-})
-//volume control
-function setVolume() {
-    audio.volume = volumeslider.value / 100;
-}
-volumeslider.addEventListener('input', setVolume);
-
-//updating seektime duration
-function seekTimeUpdate() {
-    const newTime = audio.currentTime * (100 / audio.duration);
-    seekslider.value = newTime;
-
-    //generating current time and song duration
-    var curmin = Math.floor(audio.currentTime / 60);
-    var cursec = Math.floor(audio.currentTime - (curmin * 60));
-    var durmin = Math.floor(audio.duration / 60);
-    var dursec = Math.floor(audio.duration - (durmin * 60));
-
-    //adding zero if less than 10
-    curmin = (curmin < 10) ? "0" + curmin : curmin;
-    cursec = (cursec < 10) ? "0" + cursec : cursec;
-    durmin = (durmin < 10) ? "0" + durmin : durmin;
-    dursec = (dursec < 10) ? "0" + dursec : dursec;
-
-    //populating time box
-    curtimeText.textContent = curmin + ":" + cursec;
-    durtimeText.textContent = durmin + ":" + dursec;
-
-    //displaying playlist status
-    playlistStatus.textContent = dir + playlist[playlist_index] + ext;
-}
-audio.addEventListener('timeupdate', seekTimeUpdate);
-
-
-//autoplay song when ends
-function playAudio() {
-    audio.src = dir + playlist[playlist_index] + ext;
-    audio.currentTime = 0;
-    audio.play();
-}
-function autoPlay() {
-    if (playlist_index == (playlist.length - 1)) {
-        playlist_index = 0;
-        playAudio();
-    }
-    else {
-        playlist_index++;
-        playAudio();
-    }
-}
-audio.addEventListener('ended', autoPlay);
-
-//check playing or not and add class to it play/pause
-function checkPlayPause() {
-    if (audio.paused) {
-        playToggle.classList.toggle("fa-pause-circle");
-    }
-}
-
-
-
-//changing songs next and prev
-
-//on next
-function nextSong() {
-    checkPlayPause();
-    if (playlist_index == (playlist.length - 1)) {
-        playlist_index = 0;
-        playAudio();
-    }
-    else {
-        playlist_index++;
-        playAudio();
-    }
-}
-next.addEventListener('click', nextSong);
-
-//on prev
-var count = playlist.length;
-function prevSong() {
-    checkPlayPause();
-    if (playlist_index == 0) {
-        playAudio();
-    }
-    else {
-        playlist_index--;
-        playAudio();
-    }
-}
-prev.addEventListener('click', prevSong);
-
-
 VerlyRange("seekslider", "#655ecf");
 VerlyRange("volumeslider", "#eb3992");
 
+class MusicPlayer {
+    constructor() {
+        this.audio = new Audio();
+        this.playlist = ["sound1", "sound2", "sound3"];
+        this.playlistIndex = 0;
+        this.audio.src = this.getCurrentSongSource();
+    }
+    getCurrentSongSource = () => {
+        return "sounds/" + this.playlist[this.playlistIndex] + ".mp3";
+    }
+    togglePlay = () => {
+        playToggle.classList.toggle("fa-pause-circle");
+        if (this.audio.paused) {
+            this.audio.play();
+        } else {
+            this.audio.pause();
+        }
+    }
+    playNext = () => {
+        this.playlistIndex = (this.playlistIndex + 1) % this.playlist.length;
+        this.audio.src = this.getCurrentSongSource();
+        this.audio.play();
+    }
+    playPrev = () => {
+        this.playlistIndex = (this.playlistIndex - 1 + this.playlist.length) % this.playlist.length;
+        this.audio.src = this.getCurrentSongSource();
+        this.audio.play();
+    }
+    guardNanForDuration = (value) => {
+        return isNaN(value) ? "00" : value;
+    }
+    seekTimeUpdate = () => {
+        const newTime = this.audio.currentTime * (100 / this.audio.duration);
+        seekslider.value = newTime;
+
+        //generating current time and song duration
+        var curmin = Math.floor(this.audio.currentTime / 60);
+        var cursec = Math.floor(this.audio.currentTime - (curmin * 60));
+        var durmin = Math.floor(this.audio.duration / 60);
+        var dursec = Math.floor(this.audio.duration - (durmin * 60));
+
+        //adding zero if less than 10
+        curmin = (curmin < 10) ? "0" + curmin : curmin;
+        cursec = (cursec < 10) ? "0" + cursec : cursec;
+        durmin = (durmin < 10) ? "0" + durmin : durmin;
+        dursec = (dursec < 10) ? "0" + dursec : dursec;
+
+        //populating time box
+        curtimeText.textContent = this.guardNanForDuration(curmin) + ":" + this.guardNanForDuration(cursec);
+        durtimeText.textContent = this.guardNanForDuration(durmin) + ":" + this.guardNanForDuration(dursec);
+
+        //displaying playlist status
+        playlistStatus.textContent = this.getCurrentSongSource();
+    }
+    setVolume = () => {
+        this.audio.volume = volumeslider.value / 100;
+    }
+    manualSeek = () => {
+        const seekVal = this.audio.duration * (seekslider.value / 100);
+        this.audio.currentTime = isNaN(seekVal) ? 0 : seekVal;
+    }
+    init = () => {
+        this.audio.addEventListener('timeupdate', this.seekTimeUpdate);
+        this.audio.addEventListener('ended', this.playNext);
+        next.addEventListener('click', this.playNext);
+        prev.addEventListener('click', this.playPrev);
+        playToggle.addEventListener('click', this.togglePlay);
+
+        //manual seek and volume
+        seekslider.addEventListener('input', this.manualSeek)
+        volumeslider.addEventListener('input', this.setVolume);
+    }
+}
+new MusicPlayer().init();
 
 function VerlyRange(id, color) {
     let DOMSlider = document.getElementById(id);
@@ -214,7 +168,3 @@ function VerlyRange(id, color) {
     }
     animate();
 }
-
-
-
-

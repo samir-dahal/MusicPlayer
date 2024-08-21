@@ -33,15 +33,20 @@ class MusicPlayer {
             this.audio.pause();
         }
     }
-    playNext = () => {
-        this.playlistIndex = (this.playlistIndex + 1) % this.playlist.length;
+    playCurrentSource = () => {
+        if (!playToggle.classList.contains("fa-pause-circle")) {
+            playToggle.classList.add("fa-pause-circle");
+        }
         this.audio.src = this.getCurrentSongSource();
         this.audio.play();
     }
+    playNext = () => {
+        this.playlistIndex = (this.playlistIndex + 1) % this.playlist.length;
+        this.playCurrentSource();
+    }
     playPrev = () => {
         this.playlistIndex = (this.playlistIndex - 1 + this.playlist.length) % this.playlist.length;
-        this.audio.src = this.getCurrentSongSource();
-        this.audio.play();
+        this.playCurrentSource();
     }
     guardNanForDuration = (value) => {
         return isNaN(value) ? "00" : value;
